@@ -50,16 +50,18 @@ def main():
     if args.language == "zh_cn":
         font = "AlibabaPuHuiTi-3-55-Regular.ttf"
         symbols = load_symbols_zh_tw()
+        output = f"src/font_puhui_{args.font_size}_{args.bpp}_{args.language}.c"
     elif args.language == "zh_tw":
-        font = "NotoSansTC-Medium.ttf"
+        font = "LXGWWenKaiMonoTC-Regular.ttf"
         symbols = load_symbols_zh_tw()
+        output = f"src/font_lxgw_{args.font_size}_{args.bpp}_{args.language}.c"
     elif args.language == "ja_jp":
         font = "NotoSansJP-Medium.ttf"
         symbols = load_symbols_ja_jp()
+        output = f"src/font_noto_{args.font_size}_{args.bpp}_{args.language}.c"
         
     
     if args.type == "lvgl":
-        output = f"src/font_puhui_{args.font_size}_{args.bpp}_{args.language}.c"
         symbols_str = "".join(symbols)
     else:  # dump
         output = f"./dump"
