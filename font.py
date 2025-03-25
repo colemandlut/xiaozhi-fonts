@@ -7,8 +7,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description='Font converter utility')
     parser.add_argument('type', choices=['lvgl', 'dump'], help='Output type: lvgl or dump')
     parser.add_argument('--font-size', type=int, default=14, help='Font size (default: 14)')
-    parser.add_argument('--bpp', type=int, default=4, help='Bits per pixel (default: 4)')
-    parser.add_argument('--language', choices=['zh_cn', 'zh_tw', 'ja_jp'], help='zh_cn/zh_tw/ja_jp')
+    parser.add_argument('--bpp', type=int, default=1, help='Bits per pixel (default: 1)')
+    parser.add_argument('--language', choices=['zh_cn', 'zh_tw', 'ja_jp','zh_cn_ja_jp','all'], help='zh_cn/zh_tw/ja_jp/zh_cn_ja_jp/all')
     return parser.parse_args()
 
 def load_symbols_zh_cn():
@@ -41,15 +41,33 @@ def load_symbols_ja_jp():
         symbols.append(chr(unicode))
     return symbols
 
+def load_symbols_zh_cn_ja_jp():
+    symbols_zh = load_symbols_zh_cn()
+    symbols_ja = load_symbols_ja_jp()
+
+    symbols = symbols_zh + symbols_ja
+    unique_symbols = list(set(symbols))
+
+    return unique_symbols
+
+def load_symbols_all():
+    symbols_zh = load_symbols_zh_cn()
+    symbols_ja = load_symbols_ja_jp()
+    symbols_tw = load_symbols_zh_tw()
+
+    symbols = symbols_zh + symbols_tw + symbols_ja
+    unique_symbols = list(set(symbols))
+
+    return unique_symbols
 
 def main():
     args = parse_arguments()
-    
+
     flags = "--force-fast-kern-format --no-compress --no-prefilter"
     
     if args.language == "zh_cn":
         font = "AlibabaPuHuiTi-3-55-Regular.ttf"
-        symbols = load_symbols_zh_tw()
+        symbols = load_symbols_zh_cn()
         output = f"src/font_puhui_{args.font_size}_{args.bpp}_{args.language}.c"
     elif args.language == "zh_tw":
         font = "LXGWWenKaiMonoTC-Regular.ttf"
@@ -59,8 +77,15 @@ def main():
         font = "NotoSansJP-Medium.ttf"
         symbols = load_symbols_ja_jp()
         output = f"src/font_noto_{args.font_size}_{args.bpp}_{args.language}.c"
-        
-    
+    elif args.language == "zh_cn_ja_jp":
+        font = "AlibabaPuHuiTi-3-55-Regular.ttf"
+        symbols = load_symbols_zh_cn_ja_jp()
+        output = f"src/font_puhui_zh_ja_{args.font_size}_{args.bpp}_{args.language}.c"
+    elif args.language == "all":
+        font = "AlibabaPuHuiTi-3-55-Regular.ttf"
+        symbols = load_symbols_all()
+        output = f"src/font_puhui_all_{args.font_size}_{args.bpp}_{args.language}.c"
+
     if args.type == "lvgl":
         symbols_str = "".join(symbols)
     else:  # dump
