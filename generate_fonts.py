@@ -15,10 +15,6 @@ font_configs = [
     (16, 4, "ja_jp"),  # 16号字体，4 bpp
     (20, 4, "ja_jp"),  # 20号字体，4 bpp
     (30, 4, "ja_jp"),  # 30号字体，4 bpp
-    (14, 1, "zh_cn_ja_jp"),  # 14号字体，1 bpp
-    (16, 4, "zh_cn_ja_jp"),  # 16号字体，4 bpp
-    (20, 4, "zh_cn_ja_jp"),  # 20号字体，4 bpp
-    (30, 4, "zh_cn_ja_jp"),  # 30号字体，4 bpp
     (14, 1, "all"),  # 14号字体，1 bpp
     (16, 4, "all"),  # 16号字体，4 bpp
     (20, 4, "all"),  # 20号字体，4 bpp
